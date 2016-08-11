@@ -1,0 +1,168 @@
+/*----------------------------------------------------------------
+                    Door Controller by Lightning  
+----------------------------------------------------------------*/
+
+server
+{
+    //Inputs and Outputs
+    input number Open;
+    input number Close;
+    input number Lock;
+    input number AutoClose;
+    input number CloseTimeIncrease;
+    input number CloseTimeDecrease;
+    input number ResetCloseTime;
+    input wirelink Keypad;
+    input wirelink DoorController;
+    input wirelink EGP;
+
+    //Variables
+    number Var_Open;
+    number Var_Close;
+    number Var_Lock;
+    number Var_AutoClose;
+    number Var_CloseTime;
+    number Var_TimeAccumulate;
+    number Var_IsOpened;
+    number Var_FullyOpen;
+    number Var_FullyClosed;
+    number Var_Blocked;
+    number Keypad_Valid;
+    number Keypad_Invalid;
+    entity Keypad_Entity = (entity)Keypad;
+    string Keypad_Check;
+    entity EGP_Entity = (entity)EGP;
+    string EGP_Check = "EGP Successfully Connected";
+    entity DoorController_Entity = (entity)DoorController;
+    string DoorController_Check;
+
+    //Main Code
+    event tick()
+    {        
+        //Keypad Input
+        Keypad_Valid = Keypad["Valid",number]
+        Keypad_Invalid = Keypad["Invalid",number]
+        
+        //Door Controller Input
+        DoorController["Open",number]=Var_Open;
+        DoorController["Close",number]=Var_Close;
+        DoorController["Lock",number]=Var_Lock;
+        DoorController["AutoClose",number]=Var_AutoClose;
+        DoorController["CloseTime",number]=Var_CloseTime;
+        
+        //Door Controller Output
+        Var_IsOpened = DoorController["IsOpened",number]
+        Var_FullyOpen = DoorController["FullyOpen",number]
+        Var_FullyClosed = DoorController["FullyClosed",number]
+        Var_Blocked = DoorController["Blocked",number]
+        
+        //EGP Functions
+        EGP.egpText(1,"Door Controller",vec2(255,50));
+        EGP.egpSize(1,40);
+        EGP.egpAlign(1,1,1);
+        EGP.egpText(2,DoorController_Check,vec2(20,100));
+        EGP.egpText(3,EGP_Check,vec2(20,120));
+        EGP.egpText(4,Keypad_Check,vec2(20,140));
+        EGP.egpText(5,"Inputs",vec2(20,200))
+        EGP.egpText(6,"Open: " + (string)Var_Open,vec2(20,220));
+        EGP.egpText(7,"Close: " + (string)Var_Close,vec2(20,240));   
+        EGP.egpText(8,"Lock: " + (string)Var_Lock,vec2(20,260)); 
+        EGP.egpText(9,"Auto Close: " + (string)Var_AutoClose,vec2(20,280)); 
+        EGP.egpText(10,"Close Time: " + (string)round(Var_CloseTime),vec2(20,300));
+        EGP.egpText(11,"Outputs",vec2(20,360))
+        EGP.egpText(12,"Is Opened: " + (string)Var_IsOpened,vec2(20,380))
+        EGP.egpText(13,"Fully Open: " + (string)Var_FullyOpen,vec2(20,400))
+        EGP.egpText(14,"Fully Closed: " + (string)Var_FullyClosed,vec2(20,420))
+        EGP.egpText(15,"Blocked: " + (string)Var_Blocked,vec2(20,440))
+        
+        //Checks if components are connected
+        if (->Keypad)
+        {
+            Keypad_Check = "Keypad Successfully Connected";
+        }
+        else
+        {
+            Keypad_Check = "Keypad Not Connected";
+        }
+        if (->DoorController)
+        {
+            DoorController_Check = "Door Controller Successfully Connected";
+        }
+        else
+        {
+            DoorController_Check = "Door Controller Not Connected";
+        }
+
+        //Lock Function
+        if (~Lock && Lock)
+        {
+            Var_Lock += 1;
+        }
+        if (Var_Lock >= 2)
+        {
+            Var_Lock = 0;
+        }
+        
+        //Open and Closing Function
+        if (!Var_Lock)
+        {
+            Var_Open = Open + Keypad_Valid;
+            Var_Close = Close + Keypad_Invalid;
+        }
+        else
+        {
+            Var_Open = 0;
+            Var_Close = 0;
+        }
+        
+        //Auto Close Function
+        if (~AutoClose && AutoClose)
+        {
+            Var_AutoClose += 1;
+        }
+        if (Var_AutoClose >= 2)
+        {
+            Var_AutoClose = 0;
+        }
+        
+        //Close Time Function
+        if (CloseTimeIncrease || CloseTimeDecrease)
+        {
+            Var_TimeAccumulate += 1;
+        }
+        else 
+        {
+            Var_TimeAccumulate = 0;
+        }
+        if (Var_TimeAccumulate < 2)
+        {
+            if (~CloseTimeIncrease && CloseTimeIncrease)
+            {
+                Var_CloseTime += 1;
+            }
+            if (~CloseTimeDecrease && CloseTimeDecrease)
+            {
+                Var_CloseTime -= 1;
+            }
+        }
+        elseif (Var_TimeAccumulate > 1)
+        {
+            if (CloseTimeIncrease)
+            {
+                Var_CloseTime += Var_TimeAccumulate / 1000;
+            }
+            if (CloseTimeDecrease)
+            {
+                Var_CloseTime -= Var_TimeAccumulate / 1000;
+            }
+        }
+        if (Var_CloseTime <= 1 || ResetCloseTime)
+        {
+            Var_CloseTime = 1;
+        }
+        if (Var_CloseTime >= 999)
+        {
+            Var_CloseTime = 999;
+        }
+    }
+}
