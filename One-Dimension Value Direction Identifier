@@ -1,0 +1,28 @@
+server
+{
+    input number Value;
+    output number Change;
+    output number Memory1;
+    output number Memory2;
+    output string String; 
+    
+    event think()
+    {
+        if (~Value) {Change += 1};
+        if (Change > 1) {Change = 0};
+        
+        if (Change == 0)
+        {
+            Memory1 = Value;
+            if (Memory1 > Memory2) {String = "Up"};
+            if (Memory1 < Memory2) {String = "Down"};
+        }
+        
+        if (Change == 1)
+        {
+            Memory2 = Value;
+            if (Memory1 > Memory2) {String = "Down"};
+            if (Memory1 < Memory2) {String = "Up"};
+        }
+    }
+}
