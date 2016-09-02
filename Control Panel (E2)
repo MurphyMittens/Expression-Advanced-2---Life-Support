@@ -1,0 +1,136 @@
+@name Control Panel
+@inputs [EGP]:wirelink
+@outputs Ch1 Ch2 Ch3 Ch4 Ch5 Ch6 Ch7 Ch8
+@persist Use [Cursor]:vector2 Channel
+@trigger 
+
+
+interval(10)
+
+
+Cursor = EGP:egpCursor(owner())
+Use = owner():keyUse()
+
+
+if (first()) {Channel = 1}
+
+
+EGP:egpBox(1,vec2(90,255),vec2(180,514))
+EGP:egpColor(1,vec(25,25,25))
+
+
+EGP:egpColor(2,vec(15,110,0))
+if (Cursor:x() > 0 & Cursor:x() < 180)
+{
+ 
+if     (Cursor:y() > 104 & Cursor:y() < 155) {EGP:egpBox(2,vec2(90,130),vec2(180,51))
+    if ($Use&Use) {Channel = 1}}
+elseif (Cursor:y() > 155 & Cursor:y() < 206) {EGP:egpBox(2,vec2(90,181),vec2(180,51))
+    if ($Use&Use) {Channel = 2}}
+elseif (Cursor:y() > 206 & Cursor:y() < 257) {EGP:egpBox(2,vec2(90,232),vec2(180,51))
+    if ($Use&Use) {Channel = 3}}
+elseif (Cursor:y() > 257 & Cursor:y() < 308) {EGP:egpBox(2,vec2(90,283),vec2(180,51))
+    if ($Use&Use) {Channel = 4}}
+elseif (Cursor:y() > 308 & Cursor:y() < 359) {EGP:egpBox(2,vec2(90,334),vec2(180,51))
+    if ($Use&Use) {Channel = 5}}
+elseif (Cursor:y() > 359 & Cursor:y() < 410) {EGP:egpBox(2,vec2(90,385),vec2(180,51))
+    if ($Use&Use) {Channel = 6}}
+elseif (Cursor:y() > 410 & Cursor:y() < 461) {EGP:egpBox(2,vec2(90,436),vec2(180,51))
+    if ($Use&Use) {Channel = 7}}
+elseif (Cursor:y() > 461 & Cursor:y() < 512) {EGP:egpBox(2,vec2(90,487),vec2(180,51))
+    if ($Use&Use) {Channel = 8}}
+    
+else {EGP:egpBox(2,vec2(),vec2())}
+}
+else {EGP:egpBox(2,vec2(),vec2())}
+
+
+if (Cursor:x() > 180 & Cursor:x() < 512 & Cursor:y() > 256 & Cursor:y() < 512 & $Use & Use) 
+{
+    if (Channel == 1) {Ch1++}
+    if (Channel == 2) {Ch2++}
+    if (Channel == 3) {Ch3++}
+    if (Channel == 4) {Ch4++}
+    if (Channel == 5) {Ch5++}
+    if (Channel == 6) {Ch6++}
+    if (Channel == 7) {Ch7++}
+    if (Channel == 8) {Ch8++}    
+}
+else {Check = 0}
+
+
+if (Ch1 >= 2) {Ch1 = 0}
+if (Ch2 >= 2) {Ch2 = 0}
+if (Ch3 >= 2) {Ch3 = 0}
+if (Ch4 >= 2) {Ch4 = 0}
+if (Ch5 >= 2) {Ch5 = 0}
+if (Ch6 >= 2) {Ch6 = 0}
+if (Ch7 >= 2) {Ch7 = 0}
+if (Ch8 >= 2) {Ch8 = 0}
+
+
+EGP:egpBox(3,vec2(347,385),vec2(333,255))
+if (Channel == 1 & Ch1 == 0|
+    Channel == 2 & Ch2 == 0|
+    Channel == 3 & Ch3 == 0|
+    Channel == 4 & Ch4 == 0|
+    Channel == 5 & Ch5 == 0|
+    Channel == 6 & Ch6 == 0|
+    Channel == 7 & Ch7 == 0|
+    Channel == 8 & Ch8 == 0)
+{
+EGP:egpColor(3,vec(15,110,0))
+EGP:egpText(14,"SET",vec2(250,320))
+EGP:egpSize(14,110)
+EGP:egpFont(14,"ChatFont")
+}
+if (Channel == 1 & Ch1 == 1|
+    Channel == 2 & Ch2 == 1|
+    Channel == 3 & Ch3 == 1|
+    Channel == 4 & Ch4 == 1|
+    Channel == 5 & Ch5 == 1|
+    Channel == 6 & Ch6 == 1|
+    Channel == 7 & Ch7 == 1|
+    Channel == 8 & Ch8 == 1)
+{
+EGP:egpColor(3,vec(150,15,0))
+EGP:egpText(14,"RESET",vec2(200,320))
+EGP:egpSize(14,110)
+EGP:egpFont(14,"ChatFont")
+}
+
+
+EGP:egpText(4,"Channel",vec2(25,10))
+EGP:egpSize(4,40)
+EGP:egpFont(4,"ChatFont")
+EGP:egpText(5,"Index",vec2(40,60))
+EGP:egpSize(5,40)
+EGP:egpFont(5,"ChatFont")
+EGP:egpText(6,"Ch1",vec2(50,108))
+EGP:egpSize(6,40)
+EGP:egpFont(6,"ChatFont")
+EGP:egpText(7,"Ch2",vec2(50,160))
+EGP:egpSize(7,40)
+EGP:egpFont(7,"ChatFont")
+EGP:egpText(8,"Ch3",vec2(50,210))
+EGP:egpSize(8,40)
+EGP:egpFont(8,"ChatFont")
+EGP:egpText(9,"Ch4",vec2(50,262))
+EGP:egpSize(9,40)
+EGP:egpFont(9,"ChatFont")
+EGP:egpText(10,"Ch5",vec2(50,313))
+EGP:egpSize(10,40)
+EGP:egpFont(10,"ChatFont")
+EGP:egpText(11,"Ch6",vec2(50,362))
+EGP:egpSize(11,40)
+EGP:egpFont(11,"ChatFont")
+EGP:egpText(12,"Ch7",vec2(50,414))
+EGP:egpSize(12,40)
+EGP:egpFont(12,"ChatFont")
+EGP:egpText(13,"Ch8",vec2(50,465))
+EGP:egpSize(13,40)
+EGP:egpFont(13,"ChatFont")
+EGP:egpText(15,toString(Channel),vec2(200,10))
+EGP:egpSize(15,40)
+
+if (duped()) {selfDestruct()}
