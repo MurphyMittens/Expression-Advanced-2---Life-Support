@@ -1,0 +1,183 @@
+server
+{
+    //Inputs
+    input number Amplitude;
+    input number Frequency;
+    input number Interval;
+    input number Length;
+    input number Pause;
+    input number Tick;
+    input wirelink Oscilloscope;
+
+    //Variables
+    number X;
+    number Y;
+    number ID;
+    number Time;
+    number Limit;
+    number Size = 1;
+    number Offset = 255;
+    number Use;
+    number Screen;
+    
+    //Resetting the screen for each manual update
+    Oscilloscope.egpClear();
+    
+    //Main Code
+    event tick()
+    {
+        if (owner().aimEntity() == (entity)Oscilloscope)
+        {
+            Use = owner().leftClick() || owner().rightClick() || owner().keyUse();
+        }
+        else
+        {
+            Use = 0;
+        }
+        
+        if ($Use)
+        {
+            Screen += 1;
+        }
+        if (Screen >= 2)
+        {
+            Screen = 0;
+        }
+        
+        if (!Screen)
+        {
+            Oscilloscope.egpText(280,"Oscilloscope",vec2(255,220));
+            Oscilloscope.egpAlign(280,1,1);
+            Oscilloscope.egpSize(280,70);
+            Oscilloscope.egpColor(280,color(50,100,50));
+            Oscilloscope.egpText(281,"Click the Screen",vec2(255,280));
+            Oscilloscope.egpAlign(281,1,1);
+            Oscilloscope.egpSize(281,50);
+            Oscilloscope.egpText(282,"Amplitude: 0-1000",vec2(100,340));
+            Oscilloscope.egpSize(282,20);
+            Oscilloscope.egpText(283,"Frequency: 0.001~3",vec2(100,360));
+            Oscilloscope.egpSize(283,20);
+            Oscilloscope.egpText(284,"Interval: 0-1",vec2(100,380));
+            Oscilloscope.egpSize(284,20);
+            Oscilloscope.egpText(285,"Length: 0-200 (Higher value will cause lag)",vec2(100,400));
+            Oscilloscope.egpSize(285,20);
+            Oscilloscope.egpText(286,"Tick: On/Off",vec2(100,420));
+            Oscilloscope.egpSize(286,20);
+        }
+        
+        if (Screen)
+        {
+            //Just a hack for removing frontpage
+            Oscilloscope.egpText(280,"",vec2());
+            Oscilloscope.egpText(281,"",vec2());
+            Oscilloscope.egpText(282,"",vec2());
+            Oscilloscope.egpText(283,"",vec2());
+            Oscilloscope.egpText(284,"",vec2());
+            Oscilloscope.egpText(285,"",vec2());
+            Oscilloscope.egpText(286,"",vec2());
+            
+            if (Interval <= 0)
+            {
+                Limit = 0;
+            }
+            elseif (Interval >= 1)
+            {
+                Limit = 1;
+            }
+            else
+            {
+                Limit = Interval;
+            }
+        
+            if (!Pause)
+            {
+                if (Tick)
+                {
+                    Time += Limit; 
+                    X = round(Time);
+                
+                    if (Time > 512)
+                    {
+                        Time = 0;
+                    }
+                
+                    Y = sin(Time*Frequency*5.408)*(Amplitude/4) + Offset;
+
+                    ID += 1;
+                    if (ID > Length || ID > 200)
+                    {
+                        ID = 1;
+                    }
+                     
+                }
+                else
+                {
+                    X = X;
+                    Y = Y;
+                    Time = 0;
+                }
+            }
+        
+            if (~Length)
+            {
+                Oscilloscope.egpClear();
+        
+                //Grid
+                Oscilloscope.egpBox(287,vec2(66,255),vec2(1,512));
+                Oscilloscope.egpBox(288,vec2(133,255),vec2(1,512));
+                Oscilloscope.egpBox(289,vec2(199,255),vec2(1,512));
+                Oscilloscope.egpBox(290,vec2(333,255),vec2(1,512));
+                Oscilloscope.egpBox(291,vec2(400,255),vec2(1,512));
+                Oscilloscope.egpBox(292,vec2(466,255),vec2(1,512));
+                Oscilloscope.egpBox(293,vec2(266,55),vec2(512,1));
+                Oscilloscope.egpBox(294,vec2(266,121),vec2(512,1));
+                Oscilloscope.egpBox(295,vec2(266,188),vec2(512,1));
+                Oscilloscope.egpBox(296,vec2(266,322),vec2(512,1));
+                Oscilloscope.egpBox(297,vec2(266,389),vec2(512,1));
+                Oscilloscope.egpBox(298,vec2(266,456),vec2(512,1));
+                Oscilloscope.egpBox(299,vec2(255,255),vec2(512,1));
+                Oscilloscope.egpBox(300,vec2(266,255),vec2(1,512));
+            
+                //Grid Color
+                Oscilloscope.egpColor(287,color(10,20,10));
+                Oscilloscope.egpColor(288,color(10,20,10));
+                Oscilloscope.egpColor(289,color(10,20,10));
+                Oscilloscope.egpColor(290,color(10,20,10));
+                Oscilloscope.egpColor(291,color(10,20,10));
+                Oscilloscope.egpColor(292,color(10,20,10));
+                Oscilloscope.egpColor(293,color(10,20,10));
+                Oscilloscope.egpColor(294,color(10,20,10));
+                Oscilloscope.egpColor(295,color(10,20,10));
+                Oscilloscope.egpColor(296,color(10,20,10));
+                Oscilloscope.egpColor(297,color(10,20,10));
+                Oscilloscope.egpColor(298,color(10,20,10));
+                Oscilloscope.egpColor(299,color(30,50,30));
+                Oscilloscope.egpColor(300,color(30,50,30)); 
+            }
+            
+            //Graph
+            Oscilloscope.egpCircle(ID,vec2(X,Y),vec2(Size,Size));
+            Oscilloscope.egpColor(ID,color(255,0,0));
+        
+            //Text Information
+            Oscilloscope.egpText(272,"Amplitude: "+(string)Amplitude,vec2(5,5));
+            Oscilloscope.egpText(273,"Frequency: "+(string)Frequency,vec2(5,20));
+            Oscilloscope.egpText(274,"Interval: " +(string)Limit,vec2(5,35));
+            Oscilloscope.egpText(275,"Length: "+(string)Length,vec2(5,50));
+            Oscilloscope.egpText(276,"Pause: "+(string)Pause,vec2(5,65));
+            Oscilloscope.egpText(277,"Tick: "+(string)Tick,vec2(5,80));
+            Oscilloscope.egpText(278,"X: "+(string)X,vec2(5,95));
+            Oscilloscope.egpText(279,"Y: "+(string)-round(Y-255),vec2(5,110));
+        
+            //Text Size
+            Oscilloscope.egpSize(272,15);
+            Oscilloscope.egpSize(273,15);
+            Oscilloscope.egpSize(274,15);
+            Oscilloscope.egpSize(275,15);
+            Oscilloscope.egpSize(276,15);
+            Oscilloscope.egpSize(277,15);
+            Oscilloscope.egpSize(278,15);
+            Oscilloscope.egpSize(279,15);
+        }
+    }    
+}
