@@ -11,7 +11,37 @@ EA2: event tick(){} += 0.015 ~ 1 second per second
 
 
 2. Material Overlay Texture List
+
+Console Commands: pp_mat_overlay "Insert Effect Here, But Without Quatation Marks"
+                  pp_mat_overlay_refractamount <Value Between -1 and 1, for example 0.12 or -0.83>
+
+effects/combine_binocoverlay
+models/shadertest/shader3
+models/shadertest/shader4
+models/shadertest/shader5
+models/props_combine/stasisshield_sheet
+models/props_combine/com_shield001a
+models/props_c17/frostedglass_01a
+models/props_lab/tank_glass001
+models/props_combine/tprings_globe
 models/props_c17/fisheyelens
+models/overlay_rendertarget
+effects/strider_pinch_dudv
+effects/tp_eyefx/tpeye
+effects/tp_eyefx/tpeye2
+effects/tp_eyefx/tpeye3
+effects/tvscreen_noise002a
+effects/water_warp01
+
+If you have Team Fortress 2 installed/mounted, the effects below will work.
+effects/jarate_overlay
+effects/invuln_overlay_red
+effects/invuln_overlay_blue
+effects/water_warp
+effects/bleed_overlay
+effects/bombinomicon_distortion
+effects/dodge_overlay
+effects/distortion_normal001
 
 
 3. List of EGP3 Materials. Some may not work
