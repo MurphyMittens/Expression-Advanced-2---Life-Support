@@ -14,6 +14,7 @@ EA2: event tick(){} += 0.015 ~ 1 second per second
 
 Console Commands: pp_mat_overlay "Insert Effect Here, But Without Quatation Marks"
                   pp_mat_overlay_refractamount <Value Between -1 and 1, for example 0.12 or -0.83>
+                  pp_mat_overlay <0/1> to turn on/off the material overlay
 
 effects/combine_binocoverlay
 models/shadertest/shader3
