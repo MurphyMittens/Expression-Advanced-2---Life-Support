@@ -1,5 +1,6 @@
-# The Advanced Research Laboratory Of Systematics
-The Advanced Research Laboratory Of Systematics - The Garrysmod Expression Advanced 2 Life Support Project
+# The Advanced Research Laboratory Of Systematics [T.A.R.L.O.S.]
+
+The Advanced Research Laboratory Of Systematics - A Garry's Mod Project
 
 
 This project will contain Garrysmod - Expression Advanced 2 code for a variety of life support components in the game.
