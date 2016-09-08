@@ -44,8 +44,25 @@ effects/bombinomicon_distortion
 effects/dodge_overlay
 effects/distortion_normal001
 
+3. Lamp Textures
+effects/flashlight001
+effects/flashlight/slit
+effects/flashlight/circles
+effects/flashlight/window
+effects/flashlight/logo
+effects/flashlight/gradient
+effects/flashlight/bars
+effects/flashlight/tech
+effects/flashlight/soft
+effects/flashlight/hard
+effects/flashlight/caustics
+effects/flashlight/square
+effects/flashlight/camera
+effects/flashlight/view
 
-3. List of EGP3 Materials. Some may not work
+
+
+4. List of EGP3 Materials. Some may not work
 hud/leaderboard_dead
 console/background_2fort
 console/background_gravelpit
@@ -493,7 +510,7 @@ weapons/weapon_mad_usp_match
 weapons/weapon_mad_xm1014
 
 
-4. Console Commands (Mostly common used commands, but not all. Not complete!)
+5. Console Commands (Mostly common used commands, but not all. Not complete!)
 
 Console Pre-Index Syntax
 
