@@ -1,0 +1,19 @@
+@name String to Character Stream
+@inputs Send Repeat Velocity String:string
+@outputs CharNum CharString:string Vel A Change
+@persist  
+@trigger 
+
+interval(10)
+if (Velocity) {Vel = Velocity}
+if (!Velocity | Velocity < 0) {Vel = 1}
+if (Send & !A) {A = 0.001}
+if (A > 0) {A += (Vel/100)}
+if (A >= (String:length()+1) & Repeat) {A = 0.001}
+if (A >= (String:length()+1) & !Repeat) {A = 0}
+CharString = String:index(floor(A))
+CharNum = toByte(String:index(floor(A)))
+
+
+
+#Needs a way to tick each time the value changes.
